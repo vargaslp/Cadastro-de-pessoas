@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Cadastro</title>
+</head>
+
+<body>
+    <div class="container jumbotron">
+
+        <form class="form-group" id="formID">
+
+
+            <div class="form-group" id="nome">
+                <label for="name">Nome completo:</label>
+                <input type="text" name="name" id="nameID" placeholder="Nome completo">
+            </div>
+            <div class="form-group" id="sex">
+                <label for="gender">Sexo:</label><br>
+                <label for="male">Masculino</label>
+                <input type="radio" name="gender" id="genderM" checked>
+                <label for="female">Feminino</label>
+                <input type="radio" name="gender" id="genderF">
+            </div>
+
+            <div class="form-group" id="email">
+                <label for="email">E-mail:</label>
+                <input type="email" name="email" id="emailID" placeholder="E-mail">
+            </div>
+
+            <div class="form-group" id="cep">
+                <label for="cep">Cep:</label>
+                <input type="text" name="cep" id="cepID" placeholder="Cep">
+            </div>
+
+            <button type="submit" class="btn btn-dark">Enviar</button>
+        </form>
+
+        <table class="table" id="table-cap" >
+            <thead>
+              <tr>
+                <!--<th style="width: 10px">Foto</th>-->
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Sexo</th>
+                <th>Ano nascimento</th>
+              </tr>
+            </thead>
+
+        <tbody id="table-register">
+
+
+        </tbody>
+    </div>
+    <script src="controllers/registerController.js"></script>
+    <script src="models/register.js"></script>
+    <script src="registerIndex.js"></script>
+
+</body>
+
+</html>
