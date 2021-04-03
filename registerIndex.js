@@ -1,26 +1,29 @@
 var register = {}
-
-//var form = document.querySelectorAll('#formID [name = gender ]:checked')
-var name = document.querySelector('#nameID');
-var email = document.querySelector('#emailID');
-var cep = document.querySelector('cepID');
-
-
-
 var form = document.querySelectorAll('#formID [name]');
+//var form = document.querySelectorAll('#formID [name = gender ]:checked')
 
+document.getElementById("formID").addEventListener('submit', (e)=>{
 
-form.forEach(function(value){
+    e.preventDefault()
 
-    if(value.name == "gender" && value.checked){
+    form.forEach(function (field) {
 
-        console.log(value);
-
-    }else{
-
-    }
+        if (field.name == "gender") {
+            if (field.checked) {
     
+                register[field.name] = field.value
+            }
+    
+        } else {
+    
+            register[field.name] = field.value
+    
+        }
+    })
 
 
-
+    console.log(register)
 })
+
+
+
