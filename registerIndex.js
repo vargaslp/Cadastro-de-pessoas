@@ -25,9 +25,10 @@ cep.addEventListener('blur', (e) => {
             street.value = data.logradouro
             district.value = data.bairro
             city.value = data.localidade
+            console.log(data)
         })
 
-    }).catch(e => console.log("Erro"+ e))
+    }).catch(e => console.log("Erro"+ e.message))
 
 
 })
