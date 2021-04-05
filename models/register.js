@@ -1,6 +1,6 @@
 class Register {
 
-    constructor(name, birth, gender, email, cep, street, district, number, city, password) {
+    constructor(name, birth, gender, email, cep, street, district, number, city, password,photo) {
 
         this.name = name
         this.birth = birth
@@ -12,6 +12,7 @@ class Register {
         this.number = number
         this.city = city
         this.password = password
+        this.photo = photo
     }
 
 }

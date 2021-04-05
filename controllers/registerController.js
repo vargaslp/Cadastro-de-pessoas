@@ -17,18 +17,63 @@ class RegisterController {
 
             e.preventDefault();
 
-            this.addLine(this.getData())
+            let user = this.getData()
 
+            this.getPhoto().then(
+                (content)=>{
+                    user.photo = content
+
+                    this.addLine(user)
+
+                },(e)=>{
+                    console.error(e)
+
+                }
+            )
 
         })
 
 
     }//closing the submit()
 
+
+    getPhoto() {
+
+        return new Promise((resolve, reject) => {
+
+            let fileReader = new FileReader();
+
+            let elements = [...this.form.elements].filter(item => {
+                if (item.name === "photo") {
+                    return item
+                }
+            })
+
+            let file = elements[0].files[0]
+            fileReader.onload = () => {
+
+                resolve(fileReader.result)
+            }
+
+            fileReader.onerror = (e)=>{
+                reject(e)
+            }
+
+            fileReader.readAsDataURL(file)
+
+        })
+
+
+
+    }
+
+
+
     addLine(dataUser) {
 
         this.table.innerHTML =
             ` <tr>
+             <td><img src=${dataUser.photo} alt="user image" class="rounded-circle img-sm"></td>
              <td>${dataUser.name}</td>
              <td>${dataUser.email}</td>
              <td>${dataUser.gender}</td>
@@ -113,7 +158,8 @@ class RegisterController {
             register.district,
             register.number,
             register.city,
-            register.password
+            register.password,
+            register.photo
         )
 
 
