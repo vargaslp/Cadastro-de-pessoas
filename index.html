@@ -12,7 +12,7 @@
     <title>Cadastro</title>
 </head>
 
-<body>
+<body id="bodyID">
     <div class="container jumbotron">
 
         <form class="form-group" id="formID">
@@ -51,6 +51,12 @@
 
             </div>
 
+            <div class="form-grup">
+                <label for="password">Senha:</label>
+                <input type="password" class="form-grup" name="password" placeholder="Senha">
+
+            </div>
+
             <button type="submit" class="btn btn-dark">Enviar</button>
         </form>
 
@@ -62,16 +68,19 @@
                     <th>E-mail</th>
                     <th>Sexo</th>
                     <th>Ano nascimento</th>
+                    <th>Rua</th>
+                    <th>Número</th>
+                    <th>Bairro</th>
                 </tr>
             </thead>
 
             <tbody id="table-register">
 
-
             </tbody>
     </div>
-    <script src="controllers/registerController.js"></script>
+    
     <script src="models/register.js"></script>
+    <script src="controllers/registerController.js"></script>
     <script src="registerIndex.js"></script>
 
 </body>
