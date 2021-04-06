@@ -17,9 +17,9 @@ class RegisterController {
 
             e.preventDefault();
 
-            let btnSubtmit =  this.form.querySelector("[type=submit]")
+            let btnSubtmit = this.form.querySelector("[type=submit]")
 
-           btnSubtmit.disabled = true
+            btnSubtmit.disabled = false
 
             let user = this.getData()
 
@@ -31,7 +31,7 @@ class RegisterController {
 
                     this.form.reset()
 
-                    btnSubtmit = false
+                    btnSubtmit = true
 
                 }, (e) => {
                     console.error(e)
@@ -96,7 +96,7 @@ class RegisterController {
              <td>${dataUser.street} </td>
              <td>${dataUser.number} </td>
              <td>${dataUser.district} </td>
-             <td>${dataUser.date}</td>
+             <td>${Utilities.dateFormat(dataUser.date)}</td>
              <td>
                 <button type="button" class="btn btn-dark">Editar</button>
                 <button type="button" class="btn btn-danger">Excluir</button>
@@ -150,6 +150,14 @@ class RegisterController {
 
 
         [...this.form.elements].forEach(function (field) {
+
+            if(['name', 'email', 'password'].indexOf(field.name) > -1 && !field.value){
+
+                console.dir(field)
+
+
+
+            }
 
             if (field.name == "gender") {
                 if (field.checked) {
