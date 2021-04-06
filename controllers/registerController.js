@@ -17,15 +17,23 @@ class RegisterController {
 
             e.preventDefault();
 
+            let btnSubtmit =  this.form.querySelector("[type=submit]")
+
+           btnSubtmit.disabled = true
+
             let user = this.getData()
 
             this.getPhoto().then(
-                (content)=>{
+                (content) => {
                     user.photo = content
 
                     this.addLine(user)
 
-                },(e)=>{
+                    this.form.reset()
+
+                    btnSubtmit = false
+
+                }, (e) => {
                     console.error(e)
 
                 }
@@ -55,25 +63,32 @@ class RegisterController {
                 resolve(fileReader.result)
             }
 
-            fileReader.onerror = (e)=>{
+            fileReader.onerror = (e) => {
                 reject(e)
             }
 
-            fileReader.readAsDataURL(file)
+            if (file) {
+                fileReader.readAsDataURL(file)
+            } else {
+                resolve('../none.png')
+            }
 
         })
 
 
 
-    }
+    }// closing the getPhoto()
 
 
 
     addLine(dataUser) {
 
-        this.table.innerHTML =
-            ` <tr>
-             <td><img src=${dataUser.photo} alt="user image" class="rounded-circle img-sm"></td>
+        let tr = document.createElement("tr")
+
+
+        tr.innerHTML =
+            `
+             <td><img src="${dataUser.photo}" alt="user image" class="rounded-circle img-sm"></td>
              <td>${dataUser.name}</td>
              <td>${dataUser.email}</td>
              <td>${dataUser.gender}</td>
@@ -81,12 +96,14 @@ class RegisterController {
              <td>${dataUser.street} </td>
              <td>${dataUser.number} </td>
              <td>${dataUser.district} </td>
+             <td>${dataUser.date}</td>
              <td>
                 <button type="button" class="btn btn-dark">Editar</button>
                 <button type="button" class="btn btn-danger">Excluir</button>
              </td>
-         </tr>
         `
+        console.log(dataUser.data)
+        this.table.appendChild(tr)
     }//closing the addLine()
 
     getViaCep() {
