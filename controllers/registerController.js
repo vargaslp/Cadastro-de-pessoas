@@ -10,6 +10,16 @@ class RegisterController {
 
     }
 
+    editBtnCancel() {
+
+        document.querySelector("#formID-updade .btn-cancel").addEventListener("click", e => {
+
+            this.showPanelCreate()
+
+        })
+
+    }
+
 
     submit() {
 
@@ -23,11 +33,11 @@ class RegisterController {
 
             let user = this.getData()
 
-            if(!user) return false;
+            if (!user) return false;
 
             this.getPhoto().then(
                 (content) => {
-                    
+
                     user.photo = content
 
                     this.addLine(user)
@@ -88,6 +98,8 @@ class RegisterController {
 
         let tr = document.createElement("tr")
 
+        tr.dataset.user = JSON.stringify('tr')
+
 
         tr.innerHTML =
             `
@@ -101,13 +113,40 @@ class RegisterController {
              <td>${dataUser.district} </td>
              <td>${Utilities.dateFormat(dataUser.date)}</td>
              <td>
-                <button type="button" class="btn btn-dark">Editar</button>
+                <button type="button" class="btn btn-dark btn-edit">Editar</button>
                 <button type="button" class="btn btn-danger">Excluir</button>
              </td>
         `
+        tr.querySelector('.btn-edit').addEventListener('click', e => {
+
+
+            console.log(JSON.parse(tr.dataset.user))
+
+
+
+            this.showPanelUpdate()
+
+        })
+
 
         this.table.appendChild(tr)
     }//closing the addLine()
+
+    showPanelCreate() {
+
+        document.querySelector('.primary').style.display = "block"
+        document.querySelector('.secondary').style.display = "none"
+
+    }
+
+
+    showPanelUpdate() {
+
+        document.querySelector('.primary').style.display = "none"
+        document.querySelector('.secondary').style.display = "block"
+
+    }
+
 
     getViaCep() {
 

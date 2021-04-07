@@ -68,7 +68,7 @@ class Register {
     set photo(value){
         this._photo = value
     }
-  
+
 
 }
 

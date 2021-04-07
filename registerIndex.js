@@ -1,5 +1,6 @@
 let controller = new RegisterController("formID","table-register")
 controller.submit()
+controller.editBtnCancel()
 
 
 
