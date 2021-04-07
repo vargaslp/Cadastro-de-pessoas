@@ -23,8 +23,11 @@ class RegisterController {
 
             let user = this.getData()
 
+            if(!user) return false;
+
             this.getPhoto().then(
                 (content) => {
+                    
                     user.photo = content
 
                     this.addLine(user)
@@ -102,7 +105,7 @@ class RegisterController {
                 <button type="button" class="btn btn-danger">Excluir</button>
              </td>
         `
-        console.log(dataUser.data)
+
         this.table.appendChild(tr)
     }//closing the addLine()
 
@@ -147,14 +150,15 @@ class RegisterController {
 
     getData() {
         let register = {};
+        let formIsValid = true;
 
 
         [...this.form.elements].forEach(function (field) {
 
-            if(['name', 'email', 'password'].indexOf(field.name) > -1 && !field.value){
+            if (['name', 'email', 'password'].indexOf(field.name) > -1 && !field.value) {
 
-                console.dir(field)
-
+                field.parentElement.classList.add('has-error')
+                formIsValid = false
 
 
             }
@@ -172,6 +176,11 @@ class RegisterController {
             }
 
         })
+
+        if (!formIsValid) {
+            return false
+
+        }
 
         return new Register(
             register.name,
