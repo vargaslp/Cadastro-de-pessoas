@@ -98,7 +98,9 @@ class RegisterController {
 
         let tr = document.createElement("tr")
 
-        tr.dataset.user = JSON.stringify('tr')
+        tr.dataset.user = JSON.stringify(dataUser)
+
+
 
 
         tr.innerHTML =
@@ -117,12 +119,37 @@ class RegisterController {
                 <button type="button" class="btn btn-danger">Excluir</button>
              </td>
         `
+
+
         tr.querySelector('.btn-edit').addEventListener('click', e => {
 
+            let json = JSON.parse(tr.dataset.user);
 
-            console.log(JSON.parse(tr.dataset.user))
+
+            let formUpdade = document.getElementById("formID-updade")
+            for (let name in json) {
+                let field = formUpdade.querySelector("[name=" + name.replace("_", "") + "]")
 
 
+                if (field) {
+
+                    switch (field.type) {
+
+                        case 'file':
+                            continue;
+                            break;
+                        case 'radio':
+                            field = formUpdade.querySelector("[name=" + name.replace("_", "") + "][value=" + json[name] + "]")
+                            field.checked = true
+                            break;
+                        default:
+                            field.value=json[name]
+
+
+                    }
+
+                }
+            }
 
             this.showPanelUpdate()
 
@@ -206,6 +233,7 @@ class RegisterController {
                 if (field.checked) {
 
                     register[field.name] = field.value
+                    
                 }
 
             } else {
