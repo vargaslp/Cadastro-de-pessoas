@@ -1,10 +1,12 @@
 class RegisterController {
 
 
-    constructor(formID, tableID) {
+    constructor(formID, tableID, formIDUpdate) {
 
         this.form = document.getElementById(formID)
         this.table = document.getElementById(tableID)
+        this.formUpdade = document.getElementById(formIDUpdate)
+
 
         document.addEventListener('load', this.getViaCep())
 
@@ -18,10 +20,49 @@ class RegisterController {
 
         })
 
+        this.formUpdade.addEventListener('submit', e => {
+
+            e.preventDefault()
+
+            let btnSubtmit = this.formUpdade.querySelector("[type=submit]")
+            btnSubtmit.disabled = true
+
+            let values = this.getData(this.formUpdade)
+
+            let index = this.formUpdade.dataset.trIndex;
+
+            let row = this.table.rows[index]
+
+            row.dataset.user = JSON.stringify(values)
+            //console.log(row)
+
+            row.innerHTML =
+                `
+            <td><img src="${values.photo}" alt="user image" class="rounded-circle img-sm"></td>
+            <td>${values.name}</td>
+            <td>${values.email}</td>
+            <td>${values.gender}</td>
+            <td>${values.birth}</td>
+            <td>${values.street} </td>
+            <td>${values.number} </td>
+            <td>${values.district} </td>
+            <td>${Utilities.dateFormat(values.date)}</td>
+            <td>
+               <button type="button" class="btn btn-dark btn-edit">Editar</button>
+               <button type="button" class="btn btn-danger">Excluir</button>
+            </td>
+       `
+
+            this.eventTR(row)
+
+
+        })
+
     }
 
 
     submit() {
+
 
         this.form.addEventListener('submit', e => {
 
@@ -31,7 +72,7 @@ class RegisterController {
 
             btnSubtmit.disabled = false
 
-            let user = this.getData()
+            let user = this.getData(this.form)
 
             if (!user) return false;
 
@@ -93,15 +134,54 @@ class RegisterController {
     }// closing the getPhoto()
 
 
+    eventTR(tr) {
+
+
+        tr.querySelector('.btn-edit').addEventListener('click', e => {
+
+            let json = JSON.parse(tr.dataset.user);
+            let formUpdade = document.getElementById("formID-updade")
+
+            formUpdade.dataset.trIndex = tr.sectionRowIndex;
+
+
+            for (let name in json) {
+                let field = formUpdade.querySelector("[name=" + name.replace("_", "") + "]")
+
+
+                if (field) {
+
+                    switch (field.type) {
+
+                        case 'file':
+                            continue;
+                            break;
+                        case 'radio':
+                            field = formUpdade.querySelector("[name=" + name.replace("_", "") + "][value=" + json[name] + "]")
+                            field.checked = true
+                            break;
+                        default:
+                            field.value = json[name]
+
+
+                    }
+
+                }
+            }
+
+            this.showPanelUpdate()
+
+        })
+
+
+
+    }
 
     addLine(dataUser) {
 
         let tr = document.createElement("tr")
 
         tr.dataset.user = JSON.stringify(dataUser)
-
-
-
 
         tr.innerHTML =
             `
@@ -121,39 +201,7 @@ class RegisterController {
         `
 
 
-        tr.querySelector('.btn-edit').addEventListener('click', e => {
-
-            let json = JSON.parse(tr.dataset.user);
-
-
-            let formUpdade = document.getElementById("formID-updade")
-            for (let name in json) {
-                let field = formUpdade.querySelector("[name=" + name.replace("_", "") + "]")
-
-
-                if (field) {
-
-                    switch (field.type) {
-
-                        case 'file':
-                            continue;
-                            break;
-                        case 'radio':
-                            field = formUpdade.querySelector("[name=" + name.replace("_", "") + "][value=" + json[name] + "]")
-                            field.checked = true
-                            break;
-                        default:
-                            field.value=json[name]
-
-
-                    }
-
-                }
-            }
-
-            this.showPanelUpdate()
-
-        })
+        this.eventTR(tr)
 
 
         this.table.appendChild(tr)
@@ -207,19 +255,19 @@ class RegisterController {
 
         });
 
-        this.getData()
+        this.getData(this.form)
 
 
 
     }//closing the getViaCep()
 
 
-    getData() {
+    getData(form) {
         let register = {};
         let formIsValid = true;
 
 
-        [...this.form.elements].forEach(function (field) {
+        [...form.elements].forEach(function (field) {
 
             if (['name', 'email', 'password'].indexOf(field.name) > -1 && !field.value) {
 
@@ -233,7 +281,7 @@ class RegisterController {
                 if (field.checked) {
 
                     register[field.name] = field.value
-                    
+
                 }
 
             } else {

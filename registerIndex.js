@@ -1,4 +1,4 @@
-let controller = new RegisterController("formID","table-register")
+let controller = new RegisterController("formID","table-register","formID-updade")
 controller.submit()
 controller.editBtnCancel()
 
