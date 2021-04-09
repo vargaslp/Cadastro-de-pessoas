@@ -9,6 +9,7 @@ class RegisterController {
 
 
         document.addEventListener('load', this.getViaCep())
+        this.selectData()
 
     }
 
@@ -33,28 +34,52 @@ class RegisterController {
 
             let row = this.table.rows[index]
 
-            row.dataset.user = JSON.stringify(values)
-            //console.log(row)
+            let userOld = JSON.parse(row.dataset.user)
 
-            row.innerHTML =
-                `
-            <td><img src="${values.photo}" alt="user image" class="rounded-circle img-sm"></td>
-            <td>${values.name}</td>
-            <td>${values.email}</td>
-            <td>${values.gender}</td>
-            <td>${values.birth}</td>
-            <td>${values.street} </td>
-            <td>${values.number} </td>
-            <td>${values.district} </td>
-            <td>${Utilities.dateFormat(values.date)}</td>
-            <td>
-               <button type="button" class="btn btn-dark btn-edit">Editar</button>
-               <button type="button" class="btn btn-danger">Excluir</button>
-            </td>
-       `
+            let result = Object.assign({}, userOld, values)
 
-            this.eventTR(row)
+            this.getPhoto(this.formUpdade).then(
+                (content) => {
 
+                    if (!values.photo) {
+                        result._photo = userOld._photo
+                    } else {
+
+                        result._photo = content
+                    }
+
+                    row.dataset.user = JSON.stringify(result)
+
+                    row.innerHTML =
+                        `
+                <td><img src="${result._photo}" alt="user image" class="rounded-circle img-sm"></td>
+                <td>${result._name}</td>
+                <td>${result._email}</td>
+                <td>${result._gender}</td>
+                <td>${result._birth}</td>
+                <td>${result._street} </td>
+                <td>${result._number} </td>
+                <td>${result._district} </td>
+                <td>${Utilities.dateFormat(result._date)}</td>
+                <td>
+                   <button type="button" class="btn btn-dark btn-edit">Editar</button>
+                   <button type="button" class="btn btn-danger">Excluir</button>
+                </td>
+           `
+
+                    this.eventTR(row)
+
+                    this.formUpdade.reset()
+
+                    btnSubtmit.disabled = false
+
+                    this.showPanelCreate()
+
+                }, (e) => {
+                    console.error(e)
+
+                }
+            )
 
         })
 
@@ -76,7 +101,7 @@ class RegisterController {
 
             if (!user) return false;
 
-            this.getPhoto().then(
+            this.getPhoto(this.form).then(
                 (content) => {
 
                     user.photo = content
@@ -99,7 +124,7 @@ class RegisterController {
     }//closing the submit()
 
 
-    getPhoto() {
+    getPhoto(form) {
 
         return new Promise((resolve, reject) => {
 
@@ -137,7 +162,21 @@ class RegisterController {
     eventTR(tr) {
 
 
+        tr.querySelector('.btn-delete').addEventListener('click', e => {
+
+            if (confirm("deseja realmente excluir?")) {
+
+                tr.remove()
+            }
+
+
+
+        })
+
+
         tr.querySelector('.btn-edit').addEventListener('click', e => {
+
+
 
             let json = JSON.parse(tr.dataset.user);
             let formUpdade = document.getElementById("formID-updade")
@@ -154,6 +193,8 @@ class RegisterController {
                     switch (field.type) {
 
                         case 'file':
+
+
                             continue;
                             break;
                         case 'radio':
@@ -169,6 +210,8 @@ class RegisterController {
                 }
             }
 
+            formUpdade.querySelector(".photo").src = json._photo
+
             this.showPanelUpdate()
 
         })
@@ -177,9 +220,56 @@ class RegisterController {
 
     }
 
+    getUsersStorage(){
+
+        let users = []
+
+        if (sessionStorage.getItem('users')) {
+
+            users = JSON.parse(sessionStorage.getItem('users'))
+
+        }
+
+        return users
+    }
+
+    selectData() {
+
+        let users = this.getUsersStorage()
+
+        
+        users.forEach(dataUser =>{
+
+            let user = new Register();
+
+            user.loadFronJson(dataUser)
+
+            this.addLine(user)
+
+        })
+
+
+    }
+
+
+    insert(value) {
+
+        let users = this.getUsersStorage()
+
+        users.push(value)
+
+        sessionStorage.setItem('users', JSON.stringify(users))
+
+
+    }
+
     addLine(dataUser) {
 
         let tr = document.createElement("tr")
+
+
+        this.insert(dataUser)
+
 
         tr.dataset.user = JSON.stringify(dataUser)
 
@@ -196,7 +286,7 @@ class RegisterController {
              <td>${Utilities.dateFormat(dataUser.date)}</td>
              <td>
                 <button type="button" class="btn btn-dark btn-edit">Editar</button>
-                <button type="button" class="btn btn-danger">Excluir</button>
+                <button type="button" class="btn btn-danger btn-delete">Excluir</button>
              </td>
         `
 

@@ -1,6 +1,6 @@
 class Register {
 
-    constructor(name, birth, gender, email, cep, street, district, number, city, password,photo) {
+    constructor(name, birth, gender, email, cep, street, district, number, city, password, photo) {
 
         this._name = name
         this._birth = birth
@@ -17,56 +17,71 @@ class Register {
         this._date = new Date()
     }
 
-    get date(){
+    get date() {
         return this._date
     }
 
-    get name(){
+    get name() {
         return this._name
     }
 
-    get birth(){
+    get birth() {
         return this._birth
     }
 
-    get gender(){
+    get gender() {
         return this._gender
     }
 
-    get email(){
+    get email() {
         return this._email
     }
 
-    get cep(){
+    get cep() {
         return this._cep
     }
 
-    get street(){
+    get street() {
         return this._street
     }
 
-    get district(){
+    get district() {
         return this._district
     }
 
-    get number(){
+    get number() {
         return this._number
     }
 
-    get city(){
+    get city() {
         return this._city
     }
 
-    get password(){
+    get password() {
         return this._password
     }
 
-    get photo(){
+    get photo() {
         return this._photo
     }
 
-    set photo(value){
+    set photo(value) {
         this._photo = value
+    }
+
+    loadFronJson(json) {
+
+        for (let name in json) {
+            switch (name) {
+
+                case '_date':
+                    this[name] = new Date(json[name])
+                    break;
+                default:
+                    this[name] = json[name]
+
+            }
+        }
     }
 
 
