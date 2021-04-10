@@ -106,6 +106,8 @@ class RegisterController {
 
                     user.photo = content
 
+                    this.insert(user)
+
                     this.addLine(user)
 
                     this.form.reset()
@@ -268,8 +270,6 @@ class RegisterController {
         let tr = document.createElement("tr")
 
 
-        this.insert(dataUser)
-
 
         tr.dataset.user = JSON.stringify(dataUser)
 
@@ -302,7 +302,7 @@ class RegisterController {
         document.querySelector('.primary').style.display = "block"
         document.querySelector('.secondary').style.display = "none"
 
-    }
+    }// closing showPanelCreate()
 
 
     showPanelUpdate() {
@@ -310,7 +310,7 @@ class RegisterController {
         document.querySelector('.primary').style.display = "none"
         document.querySelector('.secondary').style.display = "block"
 
-    }
+    }//closing showPanelUpdate()
 
 
     getViaCep() {
