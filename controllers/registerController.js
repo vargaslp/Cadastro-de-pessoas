@@ -67,6 +67,7 @@ class RegisterController {
                 </td>
            `
 
+                    
                     this.eventTR(row)
 
                     this.formUpdade.reset()
@@ -105,6 +106,8 @@ class RegisterController {
                 (content) => {
 
                     user.photo = content
+
+                    //user.save()
 
                     this.insert(user)
 
@@ -167,6 +170,12 @@ class RegisterController {
         tr.querySelector('.btn-delete').addEventListener('click', e => {
 
             if (confirm("deseja realmente excluir?")) {
+
+                let user= new Register()
+
+                user.loadFronJson(JSON.parse(tr.dataset.user))
+
+                user.removeModel()
 
                 tr.remove()
             }
@@ -357,7 +366,7 @@ class RegisterController {
         let formIsValid = true;
 
 
-        [...form.elements].forEach(function (field) {
+        [...form.elements].forEach(function (field) {//obrigando os campos name, email e password, serem obrigatórios
 
             if (['name', 'email', 'password'].indexOf(field.name) > -1 && !field.value) {
 

@@ -15,6 +15,7 @@ class Register {
         this._photo = photo
 
         this._date = new Date()
+        this._id
     }
 
     get date() {
@@ -65,8 +66,16 @@ class Register {
         return this._photo
     }
 
+    get id(){
+        return this._id
+    }
+
     set photo(value) {
         this._photo = value
+    }
+
+    set id(value){
+        this._id = value
     }
 
     loadFronJson(json) {
@@ -84,6 +93,84 @@ class Register {
         }
     }
 
+
+
+
+    static getUsersStorage(){
+
+        let users = []
+
+        if (sessionStorage.getItem('users')) {
+
+            users = JSON.parse(sessionStorage.getItem('users'))
+
+        }
+
+        return users
+    }
+
+    
+    removeModel(){
+
+        let users = Register.getUsersStorage()
+
+        users.forEach((userData, index)=>{
+            
+
+            if(this._email == userData._email){//o indicado seria comparar com id
+                console.log(index)
+                users.splice(index, 1);
+            }
+
+        })
+
+        sessionStorage.setItem('users',JSON.stringify(users))
+
+
+
+
+    }
+/*
+    newId(){
+
+        if(!window.id) window.id = 0 //window para deixar global no projeto. Se id não existir, recebe o 0 se não, soma mais 1
+        id++
+        return id
+
+    }
+
+
+    save(){
+
+        let users = Register.getUsersStorage()
+
+        if(this.id > 0){
+
+            users.map(u=>{
+
+
+                if(u.id === this.id){
+
+                    u = this
+                }
+
+                return u
+
+            })
+
+            let newUserData = Object.assign({}, user, this)
+
+        } else {
+            this.id = this.newId()
+            users.push(this)
+
+        }
+
+        
+        sessionStorage.setItem('users', JSON.stringify(users))
+
+    }
+*/
 
 }
 
